@@ -10,6 +10,7 @@ namespace Check_Transmission_OutlookAddIn {
         private Outlook.MAPIFolder saveSentFolder;
         private Outlook.MAPIFolder outBox;
         private int tickCount;
+        private int waitingTime;
         
         private enum MODE { Ready, Wait, Transmit, Success, Fail };
 
@@ -20,6 +21,7 @@ namespace Check_Transmission_OutlookAddIn {
             saveSentFolder = myMail.SaveSentMessageFolder;
             outBox = Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderOutbox);
             tickCount = 0;
+            waitingTime = (int)Properties.Settings.Default.WaitingTime;
         }
 
         private void FormTransmissionStatus_Load(object sender, EventArgs e) {
@@ -37,7 +39,7 @@ namespace Check_Transmission_OutlookAddIn {
 
             if (FindMail(myMailIndex, saveSentFolder) != null) {
                 ShowStatus("Successfully sent", Color.Green);
-                WaitClosing(3);
+                WaitClosing(waitingTime);
                 Close();
                 Dispose();
             } else {

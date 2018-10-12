@@ -6,7 +6,12 @@ namespace Check_Transmission_OutlookAddIn
     public partial class ThisAddIn
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e) {
+            Application.OptionsPagesAdd += Application_OptionPagesAdd;
             Application.ItemSend += new Outlook.ApplicationEvents_11_ItemSendEventHandler(Application_ItemSend);
+        }
+
+        private void Application_OptionPagesAdd(Outlook.PropertyPages pages) {
+            pages.Add(new MyPropPage1(), "Check Transmission");
         }
 
         public void Application_ItemSend(object Item, ref bool Cancel) {
